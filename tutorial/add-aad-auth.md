@@ -13,7 +13,7 @@
 </appSettings>
 ```
 
-を`YOUR_APP_ID_HERE`アプリケーション登録ポータルからのアプリケーション ID に置き換え、生成し`YOUR_APP_PASSWORD_HERE`たパスワードに置き換えます。 また、 `PORT` `ida:RedirectUri`の値をアプリケーションの URL と一致するように変更してください。
+を`YOUR_APP_ID_HERE`アプリケーション登録ポータルからのアプリケーション ID に置き換え、生成し`YOUR_APP_PASSWORD_HERE`たクライアントシークレットに置き換えます。 クライアントシークレットにアンパサンド (`&`) が含まれている場合は、をに`&amp;`置き換え`PrivateSettings.config`てください。 また、 `PORT` `ida:RedirectUri`の値をアプリケーションの URL と一致するように変更してください。
 
 > [!IMPORTANT]
 > git などのソース管理を使用している場合は、アプリ ID とパスワードを誤っ`PrivateSettings.config`てリークしないように、ソース管理からファイルを除外することをお勧めします。
@@ -342,11 +342,6 @@ namespace graph_tutorial.TokenStorage
         private void Persist()
         {
             sessionLock.EnterReadLock();
-
-            // Optimistically set HasStateChanged to false.
-            // We need to do it early to avoid losing changes made by a concurrent thread.
-            tokenCache.HasStateChanged = false;
-
             httpContext.Session[cacheId] = tokenCache.Serialize();
             sessionLock.ExitReadLock();
         }
@@ -362,7 +357,7 @@ namespace graph_tutorial.TokenStorage
         private void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             // if the access operation resulted in a cache update
-            if (tokenCache.HasStateChanged)
+            if (args.HasStateChanged)
             {
                 Persist();
             }

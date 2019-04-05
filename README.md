@@ -30,21 +30,22 @@
 
 |        ロール         |                            作成者 (s)                             |
 | -------------------- | ---------------------------------------------------------------- |
-| ラボのマニュアル/スライド | Andrew Connell (Microsoft MVP、voitanos) @andrewconnell          |
-| QA                   | ジュリー Turner (Microsoft MVP、sympraxis コンサルティング) @juliemturner |
-| スポンサー/サポート    | yina (Microsoft) @yinaa                                   |
+| ラボのマニュアル/スライド | Andrew Connell (Microsoft MVP、voitanos)@andrewconnell          |
+| QA                   | ジュリー Turner (Microsoft MVP、sympraxis コンサルティング)@juliemturner |
+| スポンサー/サポート    | yina (as) (Microsoft)@yinaa                                   |
 
 ## <a name="version-history"></a>バージョン履歴
 
 | バージョン |        日付        |                       コメント                       |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.7     | 2018年4月4日      | 2019q3 コンテンツの更新                               |
 | 1.6     | 2018年12月18日  | 2019q2 のコンテンツの更新                               |
 | 1.5     | 2018 年 11 月 27 日  | 利用 ~ docs.microsoft.com/graph                |
 | 1.4     | 2018 年 9 月 12 日 | 2019q1 コンテンツの更新                               |
 | 1.3     | 2018年8月24日    | 他のトレーニングとの一貫性を保つためのモジュールを改訂しました。 |
 | 1.2     | 2018年6月28日      | screencast を追加しました。                                    |
 | 1.1     | 2018年6月4日      | 最新のガイダンスを使用するように書き直しました。                    |
-| 1.0以降     | ~ 2017 年11月24日 | Microsoft Graph 関連製品 breakouts を追加します。       |
+| 1.0     | ~ 2017 年11月24日 | Microsoft Graph 関連製品 breakouts を追加します。       |
 
 ## <a name="disclaimer"></a>免責事項
 
