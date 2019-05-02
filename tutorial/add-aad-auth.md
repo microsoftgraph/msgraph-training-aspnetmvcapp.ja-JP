@@ -16,7 +16,7 @@
 を`YOUR_APP_ID_HERE`アプリケーション登録ポータルからのアプリケーション ID に置き換え、生成し`YOUR_APP_PASSWORD_HERE`たクライアントシークレットに置き換えます。 クライアントシークレットにアンパサンド (`&`) が含まれている場合は、をに`&amp;`置き換え`PrivateSettings.config`てください。 また、 `PORT` `ida:RedirectUri`の値をアプリケーションの URL と一致するように変更してください。
 
 > [!IMPORTANT]
-> git などのソース管理を使用している場合は、アプリ ID とパスワードを誤っ`PrivateSettings.config`てリークしないように、ソース管理からファイルを除外することをお勧めします。
+> Git などのソース管理を使用している場合は、アプリ ID とパスワードを誤っ`PrivateSettings.config`てリークしないように、ソース管理からファイルを除外することをお勧めします。
 
 この`Web.config`新しいファイルを読み込むように更新します。 `<appSettings>` (行 7) を次のように置き換えます。
 
@@ -215,7 +215,7 @@ namespace graph_tutorial.Controllers
 
 ### <a name="get-user-details"></a>ユーザーの詳細を取得する
 
-最初に、Microsoft Graph のすべての呼び出しを保持する新しいファイルを作成します。 ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `Helpers`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add > Class...**.] を選択します。ファイル`GraphHelper.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+最初に、Microsoft Graph のすべての呼び出しを保持する新しいファイルを作成します。 ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `Helpers`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add _GT_ Class...**.] を選択します。ファイル`GraphHelper.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Graph;
@@ -276,7 +276,7 @@ try
 
 トークンを入手できるようになったので、これをアプリに保存する方法を実装します。 これはサンプルアプリであるため、セッションを使用してトークンを格納します。 実際のアプリケーションでは、データベースのような、より信頼性の高いセキュリティで保護されたストレージソリューションを使用します。
 
-ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `TokenStorage`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add > Class...**.] を選択します。ファイル`SessionTokenStore.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `TokenStorage`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add _GT_ Class...**.] を選択します。ファイル`SessionTokenStore.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Identity.Client;
@@ -390,7 +390,7 @@ using graph_tutorial.TokenStorage;
 using System.IdentityModel.Claims;
 ```
 
-次に、 `OnAuthorizationCodeReceivedAsync`関数を更新して、 `SessionTokenStore`クラスのインスタンスを作成し、 `ConfidentialClientApplication`オブジェクトのコンストラクターにそれを提供します。 これにより、msal は、トークンを格納するためにキャッシュ実装を使用します。 既存の `OnAuthorizationCodeReceivedAsync` 関数を、以下の関数で置換します。
+次に、 `OnAuthorizationCodeReceivedAsync`関数を更新して、 `SessionTokenStore`クラスのインスタンスを作成し、 `ConfidentialClientApplication`オブジェクトのコンストラクターにそれを提供します。 これにより、MSAL は、トークンを格納するためにキャッシュ実装を使用します。 既存の `OnAuthorizationCodeReceivedAsync` 関数を、以下の関数で置換します。
 
 ```cs
 private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
@@ -439,7 +439,7 @@ private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNot
 
 変更内容を要約するには、次のようにします。
 
-- コードにより、の`TokenCache` `ConfidentialClientApplication`コンストラクターにオブジェクトが渡されるようになりました。 msal ライブラリは、トークンを格納し、必要に応じて更新するロジックを処理します。
+- コードにより、の`TokenCache` `ConfidentialClientApplication`コンストラクターにオブジェクトが渡されるようになりました。 MSAL ライブラリは、トークンを格納し、必要に応じて更新するロジックを処理します。
 - このコードでは、Microsoft Graph から取得したユーザーの`SessionTokenStore`詳細を、セッションに格納するオブジェクトに渡します。
 - 成功した場合、コードはリダイレクトされず、ただ返します。 これにより、OWIN ミドルウェアは認証プロセスを完了することができます。
 
@@ -521,4 +521,4 @@ protected override void OnActionExecuting(ActionExecutingContext filterContext)
 
 ただし、このトークンは存続期間が短くなります。 トークンが発行された後、有効期限が切れる時間になります。 ここでは、更新トークンが有効になります。 更新トークンを使用すると、ユーザーが再度サインインする必要なく、新しいアクセストークンをアプリで要求できます。
 
-アプリは msal ライブラリと`TokenCache`オブジェクトを使用しているため、トークン更新ロジックを実装する必要はありません。 メソッド`ConfidentialClientApplication.AcquireTokenSilentAsync`は、すべてのロジックを実行します。 最初に、キャッシュされたトークンをチェックし、有効期限が切れていない場合はそれを返します。 有効期限が切れている場合は、キャッシュされた更新トークンを使用して新しいものを取得します。 このメソッドは、次のモジュールで使用します。
+アプリは MSAL ライブラリと`TokenCache`オブジェクトを使用しているため、トークン更新ロジックを実装する必要はありません。 メソッド`ConfidentialClientApplication.AcquireTokenSilentAsync`は、すべてのロジックを実行します。 最初に、キャッシュされたトークンをチェックし、有効期限が切れていない場合はそれを返します。 有効期限が切れている場合は、キャッシュされた更新トークンを使用して新しいものを取得します。 このメソッドは、次のモジュールで使用します。

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-このデモでは、Microsoft Graph をアプリケーションに組み込みます。 このアプリケーションでは、microsoft [graph クライアントライブラリ](https://github.com/microsoftgraph/msgraph-sdk-dotnet)を使用して microsoft graph を呼び出すことにします。
+このデモでは、Microsoft Graph をアプリケーションに組み込みます。 このアプリケーションでは、microsoft [Graph クライアントライブラリ](https://github.com/microsoftgraph/msgraph-sdk-dotnet)を使用して microsoft graph を呼び出すことにします。
 
 ## <a name="get-calendar-events-from-outlook"></a>Outlook から予定表のイベントを取得する
 

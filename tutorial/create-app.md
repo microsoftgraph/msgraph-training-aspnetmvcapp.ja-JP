@@ -1,9 +1,9 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Visual Studio を開き、[ **File > New > Project**] を選択します。 [**新しいプロジェクト**] ダイアログボックスで、次の操作を行います。
+Visual Studio を開き、[ **File _GT_ New _GT_ Project**] を選択します。 [**新しいプロジェクト**] ダイアログボックスで、次の操作を行います。
 
-1. [**テンプレート > Visual C# > Web**] を選択します。
-1. [ **ASP.NET Web アプリケーション (.net Framework)**] を選択します。
+1. [**テンプレート _GT_ Visual C# > Web**] を選択します。
+1. [ **ASP.NET Web アプリケーション (.Net Framework)**] を選択します。
 1. プロジェクトの名前については、「グラフを入力してください」**というチュートリアル**を行います。
 
 ![Visual Studio 2017 [新しいプロジェクトの作成] ダイアログ](./images/vs-new-project-01.png)
@@ -18,12 +18,12 @@ Visual Studio を開き、[ **File > New > Project**] を選択します。 [**�
 に進む前に、 `bootstrap` nuget パッケージを更新し、後で使用する追加の nuget パッケージをいくつかインストールします。
 
 - [Owin web](https://www.nuget.org/packages/Microsoft.Owin.Host.SystemWeb/)を使用して、ASP.NET アプリケーションで[Owin](http://owin.org/)インターフェイスを有効にします。
-- Owin Azure で OpenID connect 認証を実行するための[openidconnect](https://www.nuget.org/packages/Microsoft.Owin.Security.OpenIdConnect/) 。
-- cookie ベースの認証を有効にする[Owin](https://www.nuget.org/packages/Microsoft.Owin.Security.Cookies/) 。
+- Owin Azure で OpenID Connect 認証を実行するための[OpenIdConnect](https://www.nuget.org/packages/Microsoft.Owin.Security.OpenIdConnect/) 。
+- Cookie ベースの認証を有効にする[Owin](https://www.nuget.org/packages/Microsoft.Owin.Security.Cookies/) 。
 - アクセストークンを要求および管理するための[id](https://www.nuget.org/packages/Microsoft.Identity.Client/) 。
-- microsoft graph に電話をかけるための[グラフ](https://www.nuget.org/packages/Microsoft.Graph/)です。
+- Microsoft Graph に電話をかけるための[グラフ](https://www.nuget.org/packages/Microsoft.Graph/)です。
 
-[**ツール > NuGet パッケージマネージャー > パッケージマネージャーコンソール**] を選択します。 パッケージマネージャーコンソールで、次のコマンドを入力します。
+[**ツール _GT_ NuGet パッケージマネージャー _GT_ パッケージマネージャーコンソール**] を選択します。 パッケージマネージャーコンソールで、次のコマンドを入力します。
 
 ```Powershell
 Update-Package bootstrap

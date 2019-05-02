@@ -3,7 +3,7 @@
 <h1 align="center">Popper</h1>
 
 <p align="center">
-    <strong>web アプリケーションで poppers 配置するために使用されるライブラリ。</strong>
+    <strong>Web アプリケーションで poppers 配置するために使用されるライブラリ。</strong>
 </p>
 
 <p align="center">
@@ -20,10 +20,10 @@
 
 <!-- 🚨 HEY! HERE BEGINS THE INTERESTING STUFF 🚨 -->
 
-## <a name="wut-poppers"></a>wut? poppers
+## <a name="wut-poppers"></a>Wut? Poppers
 
-popper は、画面上の要素で、アプリケーションの自然な流れから "ポップアウト" されます。  
-poppers の一般的な例として、ポップヒント、popovers、ドロップダウンがあります。
+Popper は、画面上の要素で、アプリケーションの自然な流れから "ポップアウト" されます。  
+Poppers の一般的な例として、ポップヒント、popovers、ドロップダウンがあります。
 
 
 ## <a name="so-yet-another-tooltip-library"></a>それでは、もう1つのヒントライブラリについて
@@ -34,8 +34,8 @@ Popper は**配置エンジン**です。その目的は、要素の位置を計
 エンジンは完全にモジュール化されており、その機能のほとんどは**修飾子**として実装されています (middlewares またはプラグインに似ています)。  
 コードベース全体が ES2015 に記述されており、その機能は、 [SauceLabs](https://saucelabs.com/)と[travisci](https://travis-ci.org/)により、実際のブラウザーで自動的にテストされます。
 
-Popper の依存関係が0である。 jQuery なし、lodash なし、nothing。  
-この技術は、[ブートストラップ v4 の Twitter](https://getbootstrap.com/)のような大規模企業、 [webclipper](https://github.com/OneNoteDev/WebClipper)および[atlaskit の Atlassian](https://aui-cdn.atlassian.com/atlaskit/registry/)などに使用されます。
+Popper の依存関係が0である。 JQuery なし、LoDash なし、nothing。  
+この技術は、[ブートストラップ v4 の Twitter](https://getbootstrap.com/)のような大規模企業、 [Webclipper](https://github.com/OneNoteDev/WebClipper)および[atlaskit の Atlassian](https://aui-cdn.atlassian.com/atlaskit/registry/)などに使用されます。
 
 ### <a name="popperjs"></a>Popper
 
@@ -43,7 +43,7 @@ Popper の依存関係が0である。 jQuery なし、lodash なし、nothing�
 
 主な点は次のとおりです。
 
-- 要素を元の dom コンテキスト (dom では混乱していません) に保持するように要素を配置します。
+- 要素を元の DOM コンテキスト (DOM では混乱していません) に保持するように要素を配置します。
 - 反応したその他のビューライブラリと統合するために、計算された結果をエクスポートできます。
 - シャドウ DOM 要素をサポートします。
 - 修飾子ベースの構造により、完全にカスタマイズできます。
@@ -64,7 +64,7 @@ Popper を使用して実行できるさまざまな例については、「[プ
 
 
 ## <a name="installation"></a>インストール
-Popper は、次のパッケージマネージャーと cdns で利用できます。
+Popper は、次のパッケージマネージャーと CDNs で利用できます。
 
 | Source |                                                                                  |
 |:-------|:---------------------------------------------------------------------------------|
@@ -81,26 +81,26 @@ Popper は、次のパッケージマネージャーと cdns で利用できま�
 |:-------|:---------------------------------------------------------------------------------|
 | npm    | `npm install tooltip.js --save`                                                  |
 | yarn   | `yarn add tooltip.js`                                                            |
-| bower * | `bower install tooltip.js=https://unpkg.com/tooltip.js --save`                   |
+| Bower * | `bower install tooltip.js=https://unpkg.com/tooltip.js --save`                   |
 | アンパッケージ  | [`https://unpkg.com/tooltip.js`](https://unpkg.com/tooltip.js)                   |
 | cdnjs  | [`https://cdnjs.com/libraries/popper.js`](https://cdnjs.com/libraries/popper.js) |
 
-\*: bower は正式にはサポートされていません。 trough をインストールするには、unpkg.com CDN のみを使用する必要があります。 このメソッドには、ライブラリの特定のバージョンを定義できないという制限があります。 bower と Popper は、プロジェクトに npm または Yarn を使用することを推奨します。  
+\*: Bower は正式にはサポートされていません。 trough をインストールするには、unpkg.com CDN のみを使用する必要があります。 このメソッドには、ライブラリの特定のバージョンを定義できないという制限があります。 Bower と Popper は、プロジェクトに npm または Yarn を使用することを推奨します。  
 詳細については、[関連する問題を参照](https://github.com/FezVrasta/popper.js/issues/390)してください。
 
 ### <a name="dist-targets"></a>Dist ターゲット
 
-Popper には、現在3つのターゲットが付属しています。 umd、ESM、および esnext。
+Popper には、現在3つのターゲットが付属しています。 UMD、ESM、および ESNext。
 
-- umd-ユニバーサルモジュール定義: AMD、requirejs および globals
+- UMD-ユニバーサルモジュール定義: AMD、RequireJS および globals
 - ESM-ES モジュール: webpack/Rollup またはブラウザー用の仕様をサポートしています。
-- esnext: で`dist/`利用できます、webpack と`babel-preset-env`共に使用できます。
+- ESNext: で`dist/`利用できます、webpack と`babel-preset-env`共に使用できます。
 
 必要に応じて、適切なものを使用してください。 `<script>`タグを使用してインポートする場合は、umd を使用します。
 
 ## <a name="usage"></a>使用方法
 
-既存の popper DOM ノードを指定した場合は、popper にボタンの近くに配置するように指示します。
+既存の popper DOM ノードを指定した場合は、Popper にボタンの近くに配置するように指示します。
 
 ```js
 var reference = document.querySelector('.my-button');
@@ -141,7 +141,7 @@ Popper は "プラグインのような" アーキテクチャに基づいてい
 修飾子を作成する方法については、「[修飾子」のドキュメントを参照して](docs/_includes/popper-documentation.md#modifiers--object)ください。
 
 
-### <a name="react-vuejs-angular-angularjs-emberjs-etc-integration"></a>応答、vue、角度、AngularJS、Ember (その他) の統合
+### <a name="react-vuejs-angular-angularjs-emberjs-etc-integration"></a>応答、Vue、角度、AngularJS、Ember (その他) の統合
 
 反応または他のライブラリにサードパーティ製ライブラリを統合することは、通常、DOM を変更してライブラリを変わってしまうため、問題になることがあります。  
 Popper では、 `applyStyle`修飾子内のすべての DOM の変更を制限することができます。これを無効にして、選択したライブラリを使用して、Popper 座標を手動で適用することができます。  
@@ -180,10 +180,10 @@ https://github.com/FezVrasta/popper.js/issues/62
 
 ### <a name="performances"></a>パフォーマンス
 
-Popper は非常に高いパフォーマンスを備えています。 通常は、popper の位置 (3.5 g GHz Intel Core i5 を使用する imac 上) を計算するのに0.5 ミリ秒かかります。  
+Popper は非常に高いパフォーマンスを備えています。 通常は、popper の位置 (3.5 G GHz Intel Core i5 を使用する iMac 上) を計算するのに0.5 ミリ秒かかります。  
 これは、 [jank](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/anatomy-of-jank)を発生させないことを意味します。これは、スムーズなユーザー操作につながることです。
 
-## <a name="notes"></a>備考
+## <a name="notes"></a>ノート
 
 ### <a name="libraries-using-popperjs"></a>Popper を使用したライブラリ
 
