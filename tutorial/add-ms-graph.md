@@ -43,21 +43,22 @@ private static GraphServiceClient GetAuthenticatedClient()
         new DelegateAuthenticationProvider(
             async (requestMessage) =>
             {
-                // Get the signed in user's id and create a token cache
-                string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-                SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId,
-                    new HttpContextWrapper(HttpContext.Current));
+                var idClient = ConfidentialClientApplicationBuilder.Create(appId)
+                    .WithRedirectUri(redirectUri)
+                    .WithClientSecret(appSecret)
+                    .Build();
 
-                var idClient = new ConfidentialClientApplication(
-                    appId, redirectUri, new ClientCredential(appSecret),
-                    tokenStore.GetMsalCacheInstance(), null);
+                string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var tokenStore = new SessionTokenStore(signedInUserId, HttpContext.Current);
+                tokenStore.Initialize(idClient.UserTokenCache);
 
                 var accounts = await idClient.GetAccountsAsync();
 
                 // By calling this here, the token can be refreshed
                 // if it's expired right before the Graph call is made
-                var result = await idClient.AcquireTokenSilentAsync(
-                    graphScopes.Split(' '), accounts.FirstOrDefault());
+                var scopes = graphScopes.Split(' ');
+                var result = await idClient.AcquireTokenSilent(scopes, accounts.FirstOrDefault())
+                    .ExecuteAsync();
 
                 requestMessage.Headers.Authorization =
                     new AuthenticationHeaderValue("Bearer", result.AccessToken);
@@ -67,15 +68,16 @@ private static GraphServiceClient GetAuthenticatedClient()
 
 このコードの内容を検討してください。
 
-- 関数`GetAuthenticatedClient`は、を`GraphServiceClient`呼び出す`AcquireTokenSilentAsync`認証プロバイダーでを初期化します。
+- 関数`GetAuthenticatedClient`は、を`GraphServiceClient`呼び出す`AcquireTokenSilent`認証プロバイダーでを初期化します。
 - `GetEventsAsync`関数の場合:
   - 呼び出し先の URL は`/v1.0/me/events`になります。
   - 関数`Select`は、各イベントに対して返されるフィールドを、ビューが実際に使用するものだけに制限します。
   - 関数`OrderBy`は、生成された日付と時刻で結果を並べ替えます。最新のアイテムが最初に表示されます。
 
-ここで、予定表ビュー用のコントローラーを作成します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **Add > Controller**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `CalendarController`の名前を指定して、[**追加**] を選択します。 新しいファイルの内容全体を次のコードに置き換えます。
+ここで、予定表ビュー用のコントローラーを作成します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **> コントローラーの追加**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `CalendarController`の名前を指定して、[**追加**] を選択します。 新しいファイルの内容全体を次のコードに置き換えます。
 
 ```cs
+using System;
 using graph_tutorial.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -89,6 +91,16 @@ namespace graph_tutorial.Controllers
         public async Task<ActionResult> Index()
         {
             var events = await GraphHelper.GetEventsAsync();
+
+            // Change start and end dates from UTC to local time
+            foreach (var ev in events)
+            {
+                ev.Start.DateTime = DateTime.Parse(ev.Start.DateTime).ToLocalTime().ToString();
+                ev.Start.TimeZone = TimeZoneInfo.Local.Id;
+                ev.End.DateTime = DateTime.Parse(ev.End.DateTime).ToLocalTime().ToString();
+                ev.End.TimeZone = TimeZoneInfo.Local.Id;
+            }
+
             return Json(events, JsonRequestBehavior.AllowGet);
         }
     }
@@ -99,7 +111,7 @@ namespace graph_tutorial.Controllers
 
 ## <a name="display-the-results"></a>結果を表示する
 
-これで、ビューを追加して、よりわかりやすい方法で結果を表示することができます。 ソリューションエクスプローラーで、[**ビュー]/[予定表**] フォルダーを右クリックし、[ **Add > View...**] を選択します。ビュー `Index`の名前を指定して、[**追加**] を選択します。 新しいファイルの内容全体を次のコードに置き換えます。
+これで、ビューを追加して、よりわかりやすい方法で結果を表示することができます。 ソリューションエクスプローラーで、[**表示]/[予定表**] フォルダーを右クリックし、[ **Add > View...**] を選択します。ビュー `Index`の名前を指定して、[**追加**] を選択します。 新しいファイルの内容全体を次のコードに置き換えます。
 
 ```html
 @model IEnumerable<Microsoft.Graph.Event>

@@ -4,7 +4,7 @@
 
 ## <a name="lab---build-mvc-apps-with-the-microsoft-graph-net-sdk"></a>ラボ-Microsoft Graph .NET SDK を使用した MVC アプリのビルド
 
-このラボでは、Azure Active Directory (Azure AD) で構成された ASP.NET MVC アプリケーションを作成します。このアプリケーションは、Microsoft Graph .NET SDK を使用して Office 365 のデータにアクセスする認証 & 認証に使用します。
+このラボでは、Azure Active Directory (Azure AD) で構成された ASP.NET MVC アプリケーションを作成し、認証 & 承認を行います。このアプリケーションは、Microsoft Graph .NET SDK を使用して Office 365 のデータにアクセスします。
 
 - [ASP.NET Microsoft Graph チュートリアル](https://docs.microsoft.com/graph/training/aspnet-tutorial)
 
@@ -28,16 +28,18 @@
 
 ## <a name="contributors"></a>多様
 
-|        ロール         |                            作成者 (s)                             |
-| -------------------- | ---------------------------------------------------------------- |
-| ラボのマニュアル/スライド | Andrew Connell (Microsoft MVP、Voitanos) @andrewconnell          |
-| QA                   | ジュリー Turner (Microsoft MVP、Sympraxis コンサルティング) @juliemturner |
-| スポンサー/サポート    | Yina (Microsoft) @yinaa                                   |
+| ロール                | 作成者 (s)                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| ラボのマニュアル/スライド | Andrew Connell (Microsoft MVP、Voitanos) [@andrewconnell](//github.com/andrewconnell)         |
+| QA                   | 渡 Windsor (Microsoft MVP、PAIT Group) [@rob-Windsor](//github.com/rob-windsor)              |
+| QA                   | ジュリー Turner (Microsoft MVP、Sympraxis コンサルティング) [@juliemturner](//github.com/juliemturner) |
+| スポンサー/サポート    | Yina (Microsoft) [@yinaa](//github.com/yinaa)                                          |
 
 ## <a name="version-history"></a>バージョン履歴
 
-| バージョン |        日付        |                       コメント                       |
+| バージョン | 日付               | コメント                                             |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.8     | 2018年5月29日       | 2019Q4 コンテンツの更新                               |
 | 1.7     | 2018年4月4日      | 2019Q3 コンテンツの更新                               |
 | 1.6     | 2018年12月18日  | 2019Q2 のコンテンツの更新                               |
 | 1.5     | 2018 年 11 月 27 日  | 利用 ~ docs.microsoft.com/graph                |
@@ -49,6 +51,6 @@
 
 ## <a name="disclaimer"></a>免責事項
 
-**このコードは、 ** 特定の目的、市販性、または非侵害に対する暗黙の保証を含め、明示的または黙示的ないかなる種類の保証なしに提供されます。**
+**このコードは、 __ 特定の目的、市販性、または非侵害に対する暗黙の保証を含め、明示的または黙示的ないかなる種類の保証なしに提供されます。**
 
 <img src="https://telemetry.sharepointpnp.com/msgraph-training-aspnetmvcapp" />
