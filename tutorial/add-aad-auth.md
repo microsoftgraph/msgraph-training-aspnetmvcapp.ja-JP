@@ -2,7 +2,7 @@
 
 この演習では、Azure AD での認証をサポートするために、前の手順で作成したアプリケーションを拡張します。 これは、Microsoft Graph を呼び出すために必要な OAuth アクセストークンを取得するために必要です。 この手順では、アプリケーションに OWIN ミドルウェアと[Microsoft Authentication library](https://www.nuget.org/packages/Microsoft.Identity.Client/)ライブラリを統合します。
 
-ソリューションエクスプローラーで**グラフのチュートリアル**プロジェクトを右クリックし、[ **Add > New Item...**.] を選択します。[ **Web 構成ファイル**] を選択し`PrivateSettings.config` 、ファイルに名前を指定して、[**追加**] を選択します。 すべてのコンテンツを次のコードに置き換えます。
+ソリューションエクスプローラーで**グラフのチュートリアル**プロジェクトを右クリックし、[**新しいアイテムの追加 >**] を選択します。[ **Web 構成ファイル**] を選択し`PrivateSettings.config` 、ファイルに名前を指定して、[**追加**] を選択します。 すべてのコンテンツを次のコードに置き換えます。
 
 ```xml
 <appSettings>
@@ -26,7 +26,7 @@
 
 ## <a name="implement-sign-in"></a>サインインの実装
 
-まず、OWIN ミドルウェアを初期化して、アプリの Azure AD 認証を使用します。 ソリューションエクスプローラーで [ **App_Start** ] フォルダーを右クリックし、[ **Add > Class...**.] を選択します。ファイル`Startup.Auth.cs`の名前を指定して、[**追加**] を選択します。 すべての内容を次のコードに置き換えます。
+まず、OWIN ミドルウェアを初期化して、アプリの Azure AD 認証を使用します。 ソリューションエクスプローラーで [ **App_Start** ] フォルダーを右クリックし、[ **> クラスの追加**] を選択します。ファイル`Startup.Auth.cs`の名前を指定して、[**追加**] を選択します。 すべての内容を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Identity.Client;
@@ -109,8 +109,10 @@ namespace graph_tutorial
 
         private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
         {
-            var idClient = new ConfidentialClientApplication(
-                appId, redirectUri, new ClientCredential(appSecret), null, null);
+            var idClient = ConfidentialClientApplicationBuilder.Create(appId)
+                .WithRedirectUri(redirectUri)
+                .WithClientSecret(appSecret)
+                .Build();
 
             string message;
             string debug;
@@ -119,8 +121,8 @@ namespace graph_tutorial
             {
                 string[] scopes = graphScopes.Split(' ');
 
-                var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-                    notification.Code, scopes);
+                var result = await idClient.AcquireTokenByAuthorizationCode(
+                    scopes, notification.Code).ExecuteAsync();
 
                 message = "Access token retrieved.";
                 debug = result.AccessToken;
@@ -170,7 +172,7 @@ public ActionResult Error(string message, string debug)
 }
 ```
 
-サインインを処理するコントローラーを追加します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **Add > Controller**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `AccountController`の名前を指定して、[**追加**] を選択します。 ファイルの内容全体を次のコードに置き換えます。
+サインインを処理するコントローラーを追加します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **> コントローラーの追加**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `AccountController`の名前を指定して、[**追加**] を選択します。 ファイルの内容全体を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Owin.Security;
@@ -215,7 +217,7 @@ namespace graph_tutorial.Controllers
 
 ### <a name="get-user-details"></a>ユーザーの詳細を取得する
 
-最初に、Microsoft Graph のすべての呼び出しを保持する新しいファイルを作成します。 ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `Helpers`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add _GT_ Class...**.] を選択します。ファイル`GraphHelper.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+最初に、Microsoft Graph のすべての呼び出しを保持する新しいファイルを作成します。 ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **> 新しいフォルダーの追加**] を選択します。 フォルダー `Helpers`に名前を指定します。 この新しいフォルダーを右クリックして、[ **> クラスの追加**] を選択します。ファイル`GraphHelper.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Graph;
@@ -257,8 +259,8 @@ try
 {
     string[] scopes = graphScopes.Split(' ');
 
-    var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-        notification.Code, scopes);
+    var result = await idClient.AcquireTokenByAuthorizationCode(
+        scopes, notification.Code).ExecuteAsync();
 
     var userDetails = await GraphHelper.GetUserDetailsAsync(result.AccessToken);
 
@@ -276,11 +278,12 @@ try
 
 トークンを入手できるようになったので、これをアプリに保存する方法を実装します。 これはサンプルアプリであるため、セッションを使用してトークンを格納します。 実際のアプリケーションでは、データベースのような、より信頼性の高いセキュリティで保護されたストレージソリューションを使用します。
 
-ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **Add > New folder**] を選択します。 フォルダー `TokenStorage`に名前を指定します。 この新しいフォルダーを右クリックして、[ **Add _GT_ Class...**.] を選択します。ファイル`SessionTokenStore.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **> 新しいフォルダーの追加**] を選択します。 フォルダー `TokenStorage`に名前を指定します。 この新しいフォルダーを右クリックして、[ **> クラスの追加**] を選択します。ファイル`SessionTokenStore.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
 
 ```cs
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Threading;
 using System.Web;
 
@@ -297,29 +300,28 @@ namespace graph_tutorial.TokenStorage
     // Adapted from https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2
     public class SessionTokenStore
     {
-        private static ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private static readonly ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+
         private readonly string userId = string.Empty;
         private readonly string cacheId = string.Empty;
         private readonly string cachedUserId = string.Empty;
-        private HttpContextBase httpContext = null;
+        private HttpContext httpContext = null;
+        private ITokenCache tokenCache;
 
-        TokenCache tokenCache = new TokenCache();
-
-        public SessionTokenStore(string userId, HttpContextBase httpContext)
+        public SessionTokenStore(string userId, HttpContext httpcontext)
         {
             this.userId = userId;
-            cacheId = $"{userId}_TokenCache";
-            cachedUserId = $"{userId}_UserCache";
-            this.httpContext = httpContext;
-            Load();
+            this.cacheId = $"{userId}_TokenCache";
+            this.cachedUserId = $"{userId}_UserCache";
+            this.httpContext = httpcontext;
         }
 
-        public TokenCache GetMsalCacheInstance()
+        public void Initialize(ITokenCache tokenCache)
         {
-            tokenCache.SetBeforeAccess(BeforeAccessNotification);
-            tokenCache.SetAfterAccess(AfterAccessNotification);
+            this.tokenCache = tokenCache;
+            this.tokenCache.SetBeforeAccess(BeforeAccessNotification);
+            this.tokenCache.SetAfterAccess(AfterAccessNotification);
             Load();
-            return tokenCache;
         }
 
         public bool HasData()
@@ -335,28 +337,24 @@ namespace graph_tutorial.TokenStorage
         private void Load()
         {
             sessionLock.EnterReadLock();
-            tokenCache.Deserialize((byte[])httpContext.Session[cacheId]);
+            tokenCache.DeserializeMsalV3((byte[])httpContext.Session[cacheId]);
             sessionLock.ExitReadLock();
         }
 
         private void Persist()
         {
             sessionLock.EnterReadLock();
-            httpContext.Session[cacheId] = tokenCache.Serialize();
+            httpContext.Session[cacheId] = tokenCache.SerializeMsalV3();
             sessionLock.ExitReadLock();
         }
 
-        // Triggered right before MSAL needs to access the cache.
         private void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
-            // Reload the cache from the persistent store in case it changed since the last access.
             Load();
         }
 
-        // Triggered right after MSAL accessed the cache.
         private void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
-            // if the access operation resulted in a cache update
             if (args.HasStateChanged)
             {
                 Persist();
@@ -395,20 +393,21 @@ using System.IdentityModel.Claims;
 ```cs
 private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
 {
-    // Get the signed in user's id and create a token cache
-    string signedInUserId = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-    SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId,
-        notification.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase);
+    var idClient = ConfidentialClientApplicationBuilder.Create(appId)
+        .WithRedirectUri(redirectUri)
+        .WithClientSecret(appSecret)
+        .Build();
 
-    var idClient = new ConfidentialClientApplication(
-        appId, redirectUri, new ClientCredential(appSecret), tokenStore.GetMsalCacheInstance(), null);
+    var signedInUserId = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+    var tokenStore = new SessionTokenStore(signedInUserId, HttpContext.Current);
+    tokenStore.Initialize(idClient.UserTokenCache);
 
     try
     {
         string[] scopes = graphScopes.Split(' ');
 
-        var result = await idClient.AcquireTokenByAuthorizationCodeAsync(
-            notification.Code, scopes);
+        var result = await idClient.AcquireTokenByAuthorizationCode(
+            scopes, notification.Code).ExecuteAsync();
 
         var userDetails = await GraphHelper.GetUserDetailsAsync(result.AccessToken);
 
@@ -428,7 +427,7 @@ private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNot
         notification.HandleResponse();
         notification.Response.Redirect($"/Home/Error?message={message}&debug={ex.Message}");
     }
-    catch(Microsoft.Graph.ServiceException ex)
+    catch (Microsoft.Graph.ServiceException ex)
     {
         string message = "GetUserDetailsAsync threw an exception";
         notification.HandleResponse();
@@ -439,7 +438,7 @@ private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNot
 
 変更内容を要約するには、次のようにします。
 
-- コードにより、の`TokenCache` `ConfidentialClientApplication`コンストラクターにオブジェクトが渡されるようになりました。 MSAL ライブラリは、トークンを格納し、必要に応じて更新するロジックを処理します。
+- コードによって、 `ConfidentialClientApplication`既定のユーザートークンキャッシュがのインスタンスに置き換え`SessionTokenStore`られました。 MSAL ライブラリは、トークンを格納し、必要に応じて更新するロジックを処理します。
 - このコードでは、Microsoft Graph から取得したユーザーの`SessionTokenStore`詳細を、セッションに格納するオブジェクトに渡します。
 - 成功した場合、コードはリダイレクトされず、ただ返します。 これにより、OWIN ミドルウェアは認証プロセスを完了することができます。
 
@@ -457,7 +456,7 @@ public ActionResult SignOut()
     if (Request.IsAuthenticated)
     {
         string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, HttpContext);
+        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
 
         tokenStore.Clear();
 
@@ -487,7 +486,7 @@ protected override void OnActionExecuting(ActionExecutingContext filterContext)
     {
         // Get the signed in user's id and create a token cache
         string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, HttpContext);
+        SessionTokenStore tokenStore = new SessionTokenStore(signedInUserId, System.Web.HttpContext.Current);
 
         if (tokenStore.HasData())
         {

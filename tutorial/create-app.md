@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Visual Studio を開き、[ **File _GT_ New _GT_ Project**] を選択します。 [**新しいプロジェクト**] ダイアログボックスで、次の操作を行います。
+Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] を選択します。 [**新しいプロジェクト**] ダイアログボックスで、次の操作を行います。
 
-1. [**テンプレート _GT_ Visual C# > Web**] を選択します。
+1. **Visual C# > Web > テンプレート**を選択します。
 1. [ **ASP.NET Web アプリケーション (.Net Framework)**] を選択します。
 1. プロジェクトの名前については、「グラフを入力してください」**というチュートリアル**を行います。
 
@@ -13,7 +13,7 @@ Visual Studio を開き、[ **File _GT_ New _GT_ Project**] を選択します�
 
 **[OK]** を選択します。 [ **ASP.NET Web アプリケーションプロジェクトの新規作成**] ダイアログボックスで、[ **MVC** ( **ASP.NET 4.7.2 Templates**)] を選択し、[ **OK]** を選択します。
 
-**F5**キーを押すか、デバッグ > を選択して**デバッグを開始**します。 すべてが動作している場合は、既定のブラウザーが開き、既定の ASP.NET ページが表示されます。
+**F5**キーを押すか、デバッグ > 選択して**デバッグを開始**します。 すべてが動作している場合は、既定のブラウザーが開き、既定の ASP.NET ページが表示されます。
 
 に進む前に、 `bootstrap` nuget パッケージを更新し、後で使用する追加の nuget パッケージをいくつかインストールします。
 
@@ -23,24 +23,24 @@ Visual Studio を開き、[ **File _GT_ New _GT_ Project**] を選択します�
 - アクセストークンを要求および管理するための[id](https://www.nuget.org/packages/Microsoft.Identity.Client/) 。
 - Microsoft Graph に電話をかけるための[グラフ](https://www.nuget.org/packages/Microsoft.Graph/)です。
 
-[**ツール _GT_ NuGet パッケージマネージャー _GT_ パッケージマネージャーコンソール**] を選択します。 パッケージマネージャーコンソールで、次のコマンドを入力します。
+[**ツール > NuGet パッケージマネージャー > パッケージマネージャーコンソール**] を選択します。 パッケージマネージャーコンソールで、次のコマンドを入力します。
 
 ```Powershell
 Update-Package bootstrap
 Install-Package Microsoft.Owin.Host.SystemWeb
 Install-Package Microsoft.Owin.Security.OpenIdConnect
 Install-Package Microsoft.Owin.Security.Cookies
-Install-Package Microsoft.Identity.Client -Version 2.7.0
-Install-Package Microsoft.Graph -Version 1.11.0
+Install-Package Microsoft.Identity.Client -Version 3.0.8
+Install-Package Microsoft.Graph -Version 1.15.0
 ```
 
-基本的な OWIN startup クラスを作成します。 ソリューションエクスプローラーで`graph-tutorial`フォルダーを右クリックし、[ **Add > New Item**] を選択します。 **OWIN Startup クラス**テンプレートを選択し、ファイル`Startup.cs`の名前を指定して、[**追加**] を選択します。
+基本的な OWIN startup クラスを作成します。 ソリューションエクスプローラーで`graph-tutorial`フォルダーを右クリックして、[**新しいアイテムの追加 >**] を選択します。 **OWIN Startup クラス**テンプレートを選択し、ファイル`Startup.cs`の名前を指定して、[**追加**] を選択します。
 
 ## <a name="design-the-app"></a>アプリを設計する
 
 最初に、エラーメッセージの簡単なモデルを作成します。 このモデルを使用して、アプリのビューでエラーメッセージをフラッシュします。
 
-ソリューションエクスプローラーで [**モデル**] フォルダーを右クリックし、[ **Add > Class...**.] を選択します。クラス`Alert`の名前を指定して、[**追加**] を選択します。 に`Alert.cs`次のコードを追加します。
+ソリューションエクスプローラーで [**モデル**] フォルダーを右クリックし、[ **> クラスの追加**] を選択します。クラス`Alert`の名前を指定して、[**追加**] を選択します。 に`Alert.cs`次のコードを追加します。
 
 ```cs
 namespace graph_tutorial.Models
@@ -197,7 +197,7 @@ body {
 
 これで、 `Alert`を作成してビューに渡すヘルパー関数を追加しました。 作成した任意のコントローラーで簡単に使用できるようにするには、基本コントローラクラスを定義します。
 
-ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **Add > Controller**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `BaseController`の名前を指定して、[**追加**] を選択します。 の内容を以下のコードと置き換えます。
+ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **> コントローラーの追加**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `BaseController`の名前を指定して、[**追加**] を選択します。 の内容を以下のコードと置き換えます。
 
 ```cs
 using graph_tutorial.Models;
