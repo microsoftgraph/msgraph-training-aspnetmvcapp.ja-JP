@@ -50,9 +50,8 @@
                         .WithClientSecret(appSecret)
                         .Build();
 
-                    string signedInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    var tokenStore = new SessionTokenStore(signedInUserId, HttpContext.Current);
-                    tokenStore.Initialize(idClient.UserTokenCache);
+                    var tokenStore = new SessionTokenStore(idClient.UserTokenCache,
+                            HttpContext.Current, ClaimsPrincipal.Current);
 
                     var accounts = await idClient.GetAccountsAsync();
 
@@ -80,8 +79,8 @@
 1. 予定表ビュー用のコントローラーを作成します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **> コントローラーの追加**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `CalendarController`の名前を指定して、[**追加**] を選択します。 新しいファイルの内容全体を次のコードに置き換えます。
 
     ```cs
-    using System;
     using graph_tutorial.Helpers;
+    using System;
     using System.Threading.Tasks;
     using System.Web.Mvc;
 

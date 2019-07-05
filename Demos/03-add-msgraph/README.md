@@ -4,7 +4,7 @@
 
 このフォルダーで完了したプロジェクトを実行するには、次のものが必要です。
 
-- 開発用コンピューターにインストールされている[Visual Studio](https://visualstudio.microsoft.com/vs/) 。 Visual Studio を持っていない場合は、「ダウンロードオプション」の前のリンクにアクセスしてください。 (**注:** このチュートリアルは、Visual Studio 2017 バージョン15.81 で記述されています。 このガイドの手順は、他のバージョンでは動作しますが、テストされていません。)
+- 開発用コンピューターにインストールされている[Visual Studio](https://visualstudio.microsoft.com/vs/) 。 Visual Studio を持っていない場合は、「ダウンロードオプション」の前のリンクにアクセスしてください。 (**注:** このチュートリアルは、Visual Studio 2019 version 16.1.4 を使用して作成されています。 このガイドの手順は、他のバージョンでは動作しますが、テストされていません。)
 - Outlook.com 上のメールボックスを持つ個人の Microsoft アカウント、または Microsoft 職場または学校のアカウントのいずれか。
 
 Microsoft アカウントを持っていない場合は、無料のアカウントを取得するためのオプションがいくつかあります。
@@ -14,7 +14,7 @@ Microsoft アカウントを持っていない場合は、無料のアカウン�
 
 ## <a name="register-a-web-application-with-the-azure-active-directory-admin-center"></a>Web アプリケーションを Azure Active Directory 管理センターに登録する
 
-1. ASP.NET アプリケーションの URL を決定します。 Visual Studio のソリューションエクスプローラーで、**グラフ-チュートリアル**プロジェクトを選択します。 [**プロパティ**] ウィンドウで、**URL** の値を探します。 この値をコピーします。
+1. ASP.NET アプリケーションの SSL URL を決定します。 Visual Studio のソリューションエクスプローラーで、**グラフ-チュートリアル**プロジェクトを選択します。 [**プロパティ**] ウィンドウで、[ **SSL URL**] の値を探します。 この値をコピーします。
 
     ![Visual Studio の [プロパティ] ウィンドウのスクリーンショット](/tutorial/images/vs-project-url.png)
 
@@ -57,7 +57,6 @@ Microsoft アカウントを持っていない場合は、無料のアカウン�
 1. `PrivateSettings.config`ファイルを編集し、次のように変更します。
     1. を`YOUR_APP_ID_HERE`アプリ登録ポータルで取得した**アプリケーション Id**に置き換えます。
     1. を`YOUR_APP_PASSWORD_HERE`アプリ登録ポータルから取得した**アプリケーションシークレット**に置き換えます。
-    1. を`PORT` ASP.NET アプリケーションの URL の一部として含まれるポート番号に置き換えます。
 1. Visual `graph-tutorial.sln` Studio で開きます。 ソリューションエクスプローラーで、**グラフチュートリアル**ソリューションを右クリックして、[ **NuGet パッケージの復元**] を選択します。
 
 ## <a name="run-the-sample"></a>サンプルを実行する

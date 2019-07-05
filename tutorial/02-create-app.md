@@ -1,17 +1,23 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] を選択します。 [**新しいプロジェクト**] ダイアログボックスで、次の操作を行います。
+まず、ASP.NET MVC プロジェクトを作成します。
 
-1. **Visual C# > Web > テンプレート**を選択します。
-1. [ **ASP.NET Web アプリケーション (.Net Framework)**] を選択します。
-1. プロジェクトの名前については、「グラフを入力してください」**というチュートリアル**を行います。
+1. Visual Studio を開き、[**新しいプロジェクトの作成**] を選択します。
 
-    ![Visual Studio 2017 [新しいプロジェクトの作成] ダイアログ](./images/vs-new-project-01.png)
+1. [**新しいプロジェクトの作成**] ダイアログで、C# を使用する [ **ASP.NET Web アプリケーション (.net Framework)** ] オプションを選択し、[**次へ**] を選択します。
+
+    ![Visual Studio 2019 [新しいプロジェクトの作成] ダイアログ](./images/vs-create-new-project.png)
+
+1. [ `graph-tutorial` **プロジェクト名**] フィールドにと入力し、[**作成**] を選択します。
+
+    ![Visual Studio 2019 [新しいプロジェクトの構成] ダイアログ](./images/vs-configure-new-project.png)
 
     > [!NOTE]
     > これらのラボ手順で指定した Visual Studio プロジェクトに対して、まったく同じ名前を入力してください。 Visual Studio プロジェクト名は、コード内の名前空間の一部になります。 これらの手順内のコードは、この手順で指定した Visual Studio プロジェクト名に一致する名前空間によって決まります。 別のプロジェクト名を使用すると、プロジェクトの作成時に入力した Visual Studio プロジェクト名と一致するようにすべての名前空間を調整しない限り、コードはコンパイルされません。
 
-1. **[OK]** を選択します。 [ **ASP.NET Web アプリケーションプロジェクトの新規作成**] ダイアログボックスで、[ **MVC** ( **ASP.NET 4.7.2 Templates**)] を選択し、[ **OK]** を選択します。
+1. [ **MVC** ] を選択して、[**作成**] を選択します。
+
+    ![Visual Studio 2019 [ASP.NET web アプリケーションの新規作成] ダイアログ](./images/vs-create-new-asp-app.png)
 
 1. **F5**キーを押すか、デバッグ > 選択して**デバッグを開始**します。 すべてが動作している場合は、既定のブラウザーが開き、既定の ASP.NET ページが表示されます。
 
@@ -33,7 +39,7 @@ Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] �
     Install-Package Microsoft.Owin.Host.SystemWeb
     Install-Package Microsoft.Owin.Security.OpenIdConnect
     Install-Package Microsoft.Owin.Security.Cookies
-    Install-Package Microsoft.Identity.Client -Version 3.0.8
+    Install-Package Microsoft.Identity.Client -Version 4.0.0
     Install-Package Microsoft.Graph -Version 1.15.0
     ```
 
@@ -43,11 +49,12 @@ Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] �
 
 1. 基本的な OWIN startup クラスを作成します。 ソリューションエクスプローラーで`graph-tutorial`フォルダーを右クリックして、[**新しいアイテムの追加 >**] を選択します。 **OWIN Startup クラス**テンプレートを選択し、ファイル`Startup.cs`の名前を指定して、[**追加**] を選択します。
 
-1. ソリューションエクスプローラーで [**モデル**] フォルダーを右クリックし、[ **> クラスの追加**] を選択します。クラス`Alert`の名前を指定して、[**追加**] を選択します。 に`Alert.cs`次のコードを追加します。 このクラスを使用して、アプリのビューでエラーメッセージをフラッシュします。
+1. ソリューションエクスプローラーで [**モデル**] フォルダーを右クリックし、[ **> クラスの追加**] を選択します。クラス`Alert`の名前を指定して、[**追加**] を選択します。 の`Alert.cs`内容全体を次のコードに置き換えます。
 
     ```cs
     namespace graph_tutorial.Models
     {
+        // Used to flash error messages in the app's views.
         public class Alert
         {
             public const string AlertKey = "TempDataAlerts";
@@ -160,7 +167,8 @@ Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] �
     </html>
     ```
 
-    このコードでは、単純なスタイル設定[](https://fontawesome.com/)のために[ブートストラップ](https://getbootstrap.com/)が追加されています。 また、ナビゲーションバーのあるグローバルレイアウトを定義し、その`Alert`クラスを使用して通知を表示します。
+    > [!NOTE]
+    > このコードでは、単純なスタイル設定[](https://fontawesome.com/)のために[ブートストラップ](https://getbootstrap.com/)が追加されています。 また、ナビゲーションバーのあるグローバルレイアウトを定義し、その`Alert`クラスを使用して通知を表示します。
 
 1. を`Content/Site.css`開いて、コンテンツ全体を次のコードに置き換えます。
 
@@ -226,8 +234,6 @@ Visual Studio を開き、[**ファイル > 新しい > プロジェクト**] �
         }
     }
     ```
-
-    すべてのコントローラーは、この基本コントローラクラスから継承して、 `Flash`関数へのアクセスを取得できます。 継承元`HomeController` `BaseController`のクラスを更新します。
 
 1. を`Controllers/HomeController.cs`開き、 `public class HomeController : Controller`行を次のように変更します。
 
