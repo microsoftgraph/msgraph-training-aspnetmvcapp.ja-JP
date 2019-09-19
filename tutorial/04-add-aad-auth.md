@@ -60,39 +60,39 @@
                 app.UseCookieAuthentication(new CookieAuthenticationOptions());
 
                 app.UseOpenIdConnectAuthentication(
-                  new OpenIdConnectAuthenticationOptions
-                  {
-                      ClientId = appId,
-                      Authority = "https://login.microsoftonline.com/common/v2.0",
-                      Scope = $"openid email profile offline_access {graphScopes}",
-                      RedirectUri = redirectUri,
-                      PostLogoutRedirectUri = redirectUri,
-                      TokenValidationParameters = new TokenValidationParameters
-                      {
-                          // For demo purposes only, see below
-                          ValidateIssuer = false
+                    new OpenIdConnectAuthenticationOptions
+                    {
+                        ClientId = appId,
+                        Authority = "https://login.microsoftonline.com/common/v2.0",
+                        Scope = $"openid email profile offline_access {graphScopes}",
+                        RedirectUri = redirectUri,
+                        PostLogoutRedirectUri = redirectUri,
+                        TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // For demo purposes only, see below
+                            ValidateIssuer = false
 
-                          // In a real multi-tenant app, you would add logic to determine whether the
-                          // issuer was from an authorized tenant
-                          //ValidateIssuer = true,
-                          //IssuerValidator = (issuer, token, tvp) =>
-                          //{
-                          //  if (MyCustomTenantValidation(issuer))
-                          //  {
-                          //    return issuer;
-                          //  }
-                          //  else
-                          //  {
-                          //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
-                          //  }
-                          //}
-                      },
-                      Notifications = new OpenIdConnectAuthenticationNotifications
-                      {
-                          AuthenticationFailed = OnAuthenticationFailedAsync,
-                          AuthorizationCodeReceived = OnAuthorizationCodeReceivedAsync
-                      }
-                  }
+                            // In a real multi-tenant app, you would add logic to determine whether the
+                            // issuer was from an authorized tenant
+                            //ValidateIssuer = true,
+                            //IssuerValidator = (issuer, token, tvp) =>
+                            //{
+                            //  if (MyCustomTenantValidation(issuer))
+                            //  {
+                            //    return issuer;
+                            //  }
+                            //  else
+                            //  {
+                            //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+                            //  }
+                            //}
+                        },
+                        Notifications = new OpenIdConnectAuthenticationNotifications
+                        {
+                            AuthenticationFailed = OnAuthenticationFailedAsync,
+                            AuthorizationCodeReceived = OnAuthorizationCodeReceivedAsync
+                        }
+                    }
                 );
             }
 
@@ -414,7 +414,7 @@
                     var userObjectId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value ??
                         user.FindFirst("oid").Value;
 
-                    var userTenantId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value ??
+                    var userTenantId = user.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value ??
                         user.FindFirst("tid").Value;
 
                     if (!string.IsNullOrEmpty(userObjectId) && !string.IsNullOrEmpty(userTenantId))
@@ -433,6 +433,7 @@
 
     ```cs
     using graph_tutorial.TokenStorage;
+    using System.Security.Claims;
     ```
 
 1. 既存の `OnAuthorizationCodeReceivedAsync` 関数を、以下の関数で置換します。

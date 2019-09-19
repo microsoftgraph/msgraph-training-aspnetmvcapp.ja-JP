@@ -39,8 +39,8 @@
     Install-Package Microsoft.Owin.Host.SystemWeb
     Install-Package Microsoft.Owin.Security.OpenIdConnect
     Install-Package Microsoft.Owin.Security.Cookies
-    Install-Package Microsoft.Identity.Client -Version 4.0.0
-    Install-Package Microsoft.Graph -Version 1.15.0
+    Install-Package Microsoft.Identity.Client -Version 4.3.1
+    Install-Package Microsoft.Graph -Version 1.17.0
     ```
 
 ## <a name="design-the-app"></a>アプリを設計する
@@ -168,7 +168,7 @@
     ```
 
     > [!NOTE]
-    > このコードでは、単純なスタイル設定[](https://fontawesome.com/)のために[ブートストラップ](https://getbootstrap.com/)が追加されています。 また、ナビゲーションバーのあるグローバルレイアウトを定義し、その`Alert`クラスを使用して通知を表示します。
+    > このコードでは、単純なスタイル設定のために[ブートストラップ](https://getbootstrap.com/)が追加さ[れてい](https://fontawesome.com/)ます。 また、ナビゲーションバーのあるグローバルレイアウトを定義し、その`Alert`クラスを使用して通知を表示します。
 
 1. を`Content/Site.css`開いて、コンテンツ全体を次のコードに置き換えます。
 
