@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-この演習では、Azure AD での認証をサポートするために、前の手順で作成したアプリケーションを拡張します。 これは、Microsoft Graph API を呼び出すために必要な OAuth アクセストークンを取得するために必要です。 この手順では、アプリケーションに OWIN ミドルウェアと[Microsoft Authentication library](https://www.nuget.org/packages/Microsoft.Identity.Client/)ライブラリを統合します。
+この演習では、前の演習のアプリケーションを拡張して、Azure AD での認証をサポートします。 これは、Microsoft Graph API を呼び出すのに必要な OAuth アクセス トークンを取得するために必要です。 この手順では、OWIN ミドルウェアと Microsoft [認証](https://www.nuget.org/packages/Microsoft.Identity.Client/) ライブラリ ライブラリをアプリケーションに統合します。
 
-1. ソリューションエクスプローラーで**グラフ-チュートリアル**プロジェクトを右クリックし、[**新しいアイテムの追加 >**] を選択します。[ **Web 構成ファイル**] を選択し`PrivateSettings.config` 、ファイルに名前を指定して、[**追加**] を選択します。 すべてのコンテンツを次のコードに置き換えます。
+1. ソリューション エクスプローラーで **グラフ チュートリアル プロジェクトを右クリック** し、[新しいアイテムの> **を選択します**。[Web **構成ファイル] を選択し**、ファイルに名前を付 `PrivateSettings.config` け、[追加] を **選択します**。 すべてのコンテンツを次のコードに置き換えます。
 
     ```xml
     <appSettings>
@@ -13,12 +13,12 @@
     </appSettings>
     ```
 
-    を`YOUR_APP_ID_HERE`アプリケーション登録ポータルからのアプリケーション ID に置き換え、生成し`YOUR_APP_PASSWORD_HERE`たクライアントシークレットに置き換えます。 クライアントシークレットにアンパサンド (`&`) が含まれている場合は、をに`&amp;`置き換え`PrivateSettings.config`てください。 また、 `PORT` `ida:RedirectUri`の値をアプリケーションの URL と一致するように変更してください。
+    アプリケーション `YOUR_APP_ID_HERE` 登録ポータルのアプリケーション ID に置き換え、生成したクライアント シークレット `YOUR_APP_PASSWORD_HERE` に置き換える。 クライアント シークレットにアンパサンド (`&`) が含まれている場合は、`PrivateSettings.config` で `&amp;` に置き換えてください。 また、`ida:RedirectUri` の `PORT` 値をアプリケーションの URL に合わせて変更してください。
 
     > [!IMPORTANT]
-    > Git などのソース管理を使用している場合は、アプリ ID とパスワードを誤っ`PrivateSettings.config`てリークしないように、ソース管理からファイルを除外することをお勧めします。
+    > git などのソース管理を使用している場合は、アプリ ID とパスワードが誤って漏洩しないように、ファイルをソース管理から除外する良い時期です `PrivateSettings.config` 。
 
-1. この`Web.config`新しいファイルを読み込むように更新します。 `<appSettings>` (行 7) を次のように置き換えます。
+1. この `Web.config` 新しいファイルを読み込む更新。 `<appSettings>` (7 行目) を以下のように置き換えます
 
     ```xml
     <appSettings file="PrivateSettings.config">
@@ -26,9 +26,9 @@
 
 ## <a name="implement-sign-in"></a>サインインの実装
 
-まず、OWIN ミドルウェアを初期化して、アプリの Azure AD 認証を使用します。
+まず OWIN ミドルウェアを初期化して、アプリに Azure AD 認証を使用します。
 
-1. ソリューションエクスプローラーで**App_Start**フォルダーを右クリックし、[ **> クラスの追加**] を選択します。ファイル`Startup.Auth.cs`の名前を指定して、[**追加**] を選択します。 すべての内容を次のコードに置き換えます。
+1. ソリューション エクスプローラーで **App_Start** フォルダーを右クリックし、[クラスの追加 **>選択します**。ファイルに名前を付 `Startup.Auth.cs` け、[追加] を **選択します**。 すべての内容を、次のコードで置き換えます。
 
     ```cs
     using Microsoft.Identity.Client;
@@ -143,9 +143,9 @@
     ```
 
     > [!NOTE]
-    > このコードでは、の`PrivateSettings.config`値を使用して OWIN ミドルウェアを構成し`OnAuthenticationFailedAsync` 、 `OnAuthorizationCodeReceivedAsync`2 つのコールバックメソッドとを定義します。 このコールバックメソッドは、サインインプロセスが Azure から戻るときに呼び出されます。
+    > このコードは、OWIN ミドルウェアの値を使用して構成し、2 つのコールバック `PrivateSettings.config` メソッドを定義 `OnAuthenticationFailedAsync` します `OnAuthorizationCodeReceivedAsync` 。 これらのコールバック メソッドは、サインイン プロセスが Azure から戻るときに呼び出されます。
 
-1. ここで、 `Startup.cs`ファイルを更新し`ConfigureAuth`てメソッドを呼び出します。 の`Startup.cs`内容全体を次のコードに置き換えます。
+1. 次に、メソッド `Startup.cs` を呼び出すファイルを更新 `ConfigureAuth` します。 内容全体を次の `Startup.cs` コードに置き換えます。
 
     ```cs
     using Microsoft.Owin;
@@ -165,7 +165,7 @@
     }
     ```
 
-1. `HomeController`クラス`message`に`Error`アクションを追加して、パラメーターと`debug`クエリパラメーターを`Alert`オブジェクトに変換します。 を`Controllers/HomeController.cs`開き、次の関数を追加します。
+1. `Error` アクションを `HomeController` クラスに追加し、`message` クエリ パラメーターおよび `debug` クエリ パラメーターを `Alert` オブジェクトに変換します。 次 `Controllers/HomeController.cs` の関数を開いて追加します。
 
     ```cs
     public ActionResult Error(string message, string debug)
@@ -175,7 +175,7 @@
     }
     ```
 
-1. サインインを処理するコントローラーを追加します。 ソリューションエクスプローラーで [**コントローラー** ] フォルダーを右クリックし、[ **> コントローラーの追加**] を選択します。[ **MVC 5 コントローラー-空**] を選択し、[**追加**] を選択します。 コントローラー `AccountController`の名前を指定して、[**追加**] を選択します。 ファイルの内容全体を次のコードに置き換えます。
+1. コントローラーを追加してサインインを処理します。 ソリューション エクスプローラーで **[コントローラー]** フォルダーを右クリックし、**[追加] > [コントローラー...]** の順に選択します。**[MVC 5 コントローラー - 空]** を選び、**[追加]** を選択します。 コントローラーの名前を `AccountController` に指定し、**[追加]** を選択します。 ファイルのすべての内容を次のコードで置き換えます。
 
     ```cs
     using Microsoft.Owin.Security;
@@ -214,17 +214,17 @@
     }
     ```
 
-    これは、 `SignIn` and `SignOut`アクションを定義します。 `SignIn`アクションは、要求が既に認証されているかどうかを確認します。 そうでない場合は、OWIN ミドルウェアを呼び出してユーザーを認証します。 アクション`SignOut`は、OWIN ミドルウェアを呼び出してサインアウトします。
+    これにより、`SignIn` アクションと `SignOut` アクションが定義されます。 `SignIn` アクションは、要求が既に認証されているかどうかを確認します。 認証されていなければ、OWIN ミドルウェアを呼び出してユーザーを認証します。 `SignOut` アクションは、サインアウトする OWIN ミドルウェアを呼び出します。
 
-1. 変更を保存し、プロジェクトを開始します。 [サインイン] ボタンをクリックすると、に`https://login.microsoftonline.com`リダイレクトされます。 Microsoft アカウントを使用してログインし、要求されたアクセス許可に同意します。 ブラウザーがアプリにリダイレクトし、トークンが表示されます。
+1. 変更を保存してプロジェクトを開始します。 [サインイン] ボタンをクリックすると、`https://login.microsoftonline.com` にリダイレクトされます。 Microsoft アカウントでログインし、要求されたアクセス許可に同意します。 ブラウザーがアプリにリダイレクトし、トークンが表示されます。
 
-### <a name="get-user-details"></a>ユーザーの詳細を取得する
+### <a name="get-user-details"></a>ユーザーの詳細情報を取得する
 
-ユーザーがログインすると、Microsoft Graph から情報を取得できます。
+ユーザーがログインすると、Microsoft Graph からそのユーザーの情報を入手できます。
 
-1. ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **> 新しいフォルダーの追加**] を選択します。 フォルダー `Helpers`に名前を指定します。
+1. ソリューション エクスプローラーで **graph-tutorial** フォルダーを右クリックし、**[追加] > [新しいフォルダー]** を選択します。 フォルダーに `Helpers` という名前を指定します。
 
-1. この新しいフォルダーを右クリックして [ **> クラスの追加**] を選択します。ファイル`GraphHelper.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+1. この新しいフォルダーを右クリックし、[ **クラスの追加>選択します**。ファイルに名前を付 `GraphHelper.cs` け、[追加] を **選択します**。 このファイルの内容を次のコードで置き換えます。
 
     ```cs
     using Microsoft.Graph;
@@ -239,10 +239,11 @@
             {
                 var graphClient = new GraphServiceClient(
                     new DelegateAuthenticationProvider(
-                        async (requestMessage) =>
+                        (requestMessage) =>
                         {
                             requestMessage.Headers.Authorization =
                                 new AuthenticationHeaderValue("Bearer", accessToken);
+                            return Task.FromResult(0);
                         }));
 
                 return await graphClient.Me.Request().GetAsync();
@@ -251,15 +252,15 @@
     }
     ```
 
-    これにより`GetUserDetails` 、関数が実装されます。これは、 `/me` Microsoft Graph SDK を使用してエンドポイントを呼び出し、結果を返します。
+    これにより、`GetUserDetails` 関数が実装されます。これは、Microsoft Graph SDK を使用して `/me` エンドポイントを呼び出して結果を返します。
 
-1. この関数`OnAuthorizationCodeReceivedAsync`を呼び出す`App_Start/Startup.Auth.cs`には、のメソッドを更新します。 次`using`のステートメントをファイルの先頭に追加します。
+1. この関数 `OnAuthorizationCodeReceivedAsync` を呼び出 `App_Start/Startup.Auth.cs` すメソッドを更新します。 次の `using` ステートメントをファイルの一番上に追加します。
 
     ```cs
     using graph_tutorial.Helpers;
     ```
 
-1. 既存`try`のブロックを次`OnAuthorizationCodeReceivedAsync`のコードで置き換えます。
+1. `OnAuthorizationCodeReceivedAsync` の既存の `try` ブロックを、以下のコードで置き換えます。
 
     ```cs
     try
@@ -279,19 +280,19 @@
     }
     ```
 
-1. 変更を保存し、アプリを開始します。サインイン後、アクセストークンではなく、ユーザーの名前と電子メールアドレスが表示されます。
+1. 変更を保存してアプリを起動すると、サインイン後、アクセス トークンの代わりにユーザーの名前とメール アドレスが表示されます。
 
 ## <a name="storing-the-tokens"></a>トークンの格納
 
-トークンを入手できるようになったので、これをアプリに保存する方法を実装します。 これはサンプルアプリであるため、セッションを使用してトークンを格納します。 実際のアプリケーションでは、データベースのような、より信頼性の高いセキュリティで保護されたストレージソリューションを使用します。 このセクションでは、次の操作を行います。
+トークンを取得できるようになったので、トークンをアプリに格納する手順を実装します。 これはサンプル アプリです。トークンの保存にはセッションを使用します。 実際のアプリでは、データベースのような、より信頼性の高い安全なストレージ ソリューションを使用します。 このセクションでは、次のことを行います。
 
-- トークンストアクラスを実装して、MSAL トークンキャッシュとユーザーの詳細情報をシリアル化し、ユーザーセッションに格納します。
-- トークンストアクラスを使用するように認証コードを更新します。
-- ベースコントローラクラスを更新して、保存されたユーザーの詳細をアプリケーションのすべてのビューに公開します。
+- トークン ストア クラスを実装して、MSAL トークン キャッシュとユーザーの詳細情報をシリアル化し、ユーザー セッションに格納します。
+- 認証コードを更新して、トークン ストア クラスを使用します。
+- ベース コントローラー クラスを更新して、格納されているユーザーの詳細情報をアプリケーション内のすべてのビューに公開します。
 
-1. ソリューションエクスプローラーで [**グラフ-チュートリアル**] フォルダーを右クリックし、[ **> 新しいフォルダーの追加**] を選択します。 フォルダー `TokenStorage`に名前を指定します。
+1. ソリューション エクスプローラーで **graph-tutorial** フォルダーを右クリックし、**[追加] > [新しいフォルダー]** を選択します。 フォルダーに `TokenStorage` という名前を指定します。
 
-1. この新しいフォルダーを右クリックして [ **> クラスの追加**] を選択します。ファイル`SessionTokenStore.cs`の名前を指定して、[**追加**] を選択します。 このファイルの内容を次のコードに置き換えます。
+1. この新しいフォルダーを右クリックし、[ **クラスの追加>選択します**。ファイルに名前を付 `SessionTokenStore.cs` け、[追加] を **選択します**。 このファイルの内容を次のコードで置き換えます。
 
     ```cs
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -429,14 +430,14 @@
     }
     ```
 
-1. 次`using`のステートメントを`App_Start/Startup.Auth.cs`ファイルの先頭に追加します。
+1. 次のステートメント `using` をファイルの一番上に追加 `App_Start/Startup.Auth.cs` します。
 
     ```cs
     using graph_tutorial.TokenStorage;
     using System.Security.Claims;
     ```
 
-1. 既存の `OnAuthorizationCodeReceivedAsync` 関数を、以下の関数で置換します。
+1. 既存の `OnAuthorizationCodeReceivedAsync` 関数を、以下の関数で置き換えます。
 
     ```cs
     private async Task OnAuthorizationCodeReceivedAsync(AuthorizationCodeReceivedNotification notification)
@@ -484,19 +485,19 @@
     ```
 
     > [!NOTE]
-    > この新しいバージョンでの`OnAuthorizationCodeReceivedAsync`変更点は、次のとおりです。
+    > この `OnAuthorizationCodeReceivedAsync` の新しいバージョンでは、次のように変更されます。
     >
-    > - これで、コードは`ConfidentialClientApplication`、既定のユーザートークンキャッシュを`SessionTokenStore`クラスでラップするようになります。 MSAL ライブラリは、トークンを格納し、必要に応じて更新するロジックを処理します。
-    > - このコードでは、Microsoft Graph から取得したユーザーの`SessionTokenStore`詳細を、セッションに格納するオブジェクトに渡します。
-    > - 成功した場合、コードはリダイレクトされず、ただ返します。 これにより、OWIN ミドルウェアは認証プロセスを完了することができます。
+    > - このコードでは、`ConfidentialClientApplication` の既定のユーザー トークン キャッシュが `SessionTokenStore` クラスでラップされるようになります。 MSAL ライブラリでは、トークンを格納し、必要に応じて更新するロジックを処理します。
+    > - このコードでは、Microsoft Graph から取得したユーザーの詳細情報を `SessionTokenStore` オブジェクトに渡して、セッションに格納するようになります。
+    > - 成功すると、コードはリダイレクトされなくなり、返されるだけです。 これにより、OWIN ミドルウェアは認証プロセスを完了できます。
 
-1. サインアウトする`SignOut`前に、トークンストアをクリアするアクションを更新します。の`Controllers/AccountController.cs`先頭に`using`次のステートメントを追加します。
+1. サインアウト `SignOut` する前にトークン ストアをクリアするアクションを更新します。次のステートメント `using` を一番上に追加します `Controllers/AccountController.cs` 。
 
     ```cs
     using graph_tutorial.TokenStorage;
     ```
 
-1. 既存の `SignOut` 関数を、以下の関数で置換します。
+1. 既存の `SignOut` 関数を、以下の関数で置き換えます。
 
     ```cs
     public ActionResult SignOut()
@@ -516,7 +517,7 @@
     }
     ```
 
-1. を`Controllers/BaseController.cs`開き、次`using`のステートメントをファイルの先頭に追加します。
+1. 次 `Controllers/BaseController.cs` のステートメントを `using` 開き、ファイルの一番上に追加します。
 
     ```cs
     using graph_tutorial.TokenStorage;
@@ -554,18 +555,18 @@
     }
     ```
 
-1. サーバーを起動し、サインインプロセスを実行します。 ホームページに戻る必要がありますが、UI は、サインインしていることを示すように変更する必要があります。
+1. サーバーを起動し、サインイン プロセスを実行します。 ホーム ページに戻る必要がありますが、サインイン中を示すために UI が変更される必要があります。
 
-    ![サインイン後のホームページのスクリーンショット](./images/add-aad-auth-01.png)
+    ![サインイン後のホーム ページのスクリーンショット](./images/add-aad-auth-01.png)
 
-1. 右上隅にあるユーザーアバターをクリックして、[**サインアウト**] リンクにアクセスします。 [**サインアウト**] をクリックすると、セッションがリセットされ、ホームページに戻ります。
+1. 右上隅にあるユーザー アバターをクリックして、[サインアウト **] リンクにアクセス** します。 **[サインアウト]** をクリックすると、セッションがリセットされ、ホーム ページに戻ります。
 
-    ![[サインアウト] リンクがあるドロップダウンメニューのスクリーンショット](./images/add-aad-auth-02.png)
+    ![[サインアウト] リンクのドロップダウン メニューのスクリーンショット](./images/add-aad-auth-02.png)
 
 ## <a name="refreshing-tokens"></a>トークンの更新
 
-この時点で、アプリケーションには、API 呼び出しの`Authorization`ヘッダーで送信されるアクセストークンがあります。 これは、アプリがユーザーに代わって Microsoft Graph にアクセスできるようにするトークンです。
+この時点で、アプリケーションはアクセス トークンを持ち、API 呼び出しのヘッダー `Authorization` で送信されます。 これは、アプリが Microsoft Graph にユーザーの代わりにアクセスできるようにするトークンです。
 
-ただし、このトークンは存続期間が短くなります。 トークンが発行された後、有効期限が切れる時間になります。 ここでは、更新トークンが有効になります。 更新トークンを使用すると、ユーザーが再度サインインする必要なく、新しいアクセストークンをアプリで要求できます。
+ただし、このトークンは一時的なものです。 トークンは発行後 1 時間で期限切れになります。 ここで、更新トークンが役に立ちます。 更新トークンを使用すると、ユーザーが再度サインインしなくても、アプリは新しいアクセス トークンを要求できます。
 
-アプリは MSAL ライブラリを使用して`TokenCache`オブジェクトをシリアル化しているため、トークン更新ロジックを実装する必要はありません。 メソッド`ConfidentialClientApplication.AcquireTokenSilentAsync`は、すべてのロジックを実行します。 最初に、キャッシュされたトークンをチェックし、有効期限が切れていない場合はそれを返します。 有効期限が切れている場合は、キャッシュされた更新トークンを使用して新しいものを取得します。 このメソッドは、次のモジュールで使用します。
+アプリは MSAL ライブラリを使用し、オブジェクトをシリアル化するために、トークン更新ロジックを `TokenCache` 実装する必要があります。 `ConfidentialClientApplication.AcquireTokenSilentAsync` メソッドが、すべてのロジックを実行します。 最初にキャッシュされたトークンをチェックし、有効期限が切れていない場合はトークンを返します。 有効期限が切れている場合は、キャッシュされた更新トークンを使用して新しい更新トークンを取得します。 このメソッドは次のモジュールで使用します。
